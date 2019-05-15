@@ -5,6 +5,7 @@ from tkinter import (
     Button,
     Label,
     Checkbutton,
+    IntVar,
 )
 
 DEFAULT_BACKGROUND_COLOR = '#DFFFDF'
@@ -55,19 +56,28 @@ class APP(Frame):
         btns = [
             {
                 'text': 'Import',
+                # FIXME
+                # add button handler
+                # 'command': lambda *a, **b: True,
             },
             {
                 'text': 'Start',
+                # FIXME
+                # add button handler
+                # 'command': lambda *a, **b: True,
             },
             {
                 'text': 'Export',
+                # FIXME
+                # add button handler
+                # 'command': lambda *a, **b: True,
             },
             {
                 'text': 'Quit',
                 'command': self.quit,
             },
         ]
-        self.buttons = [
+        [
             Button(self, **btns[i], **self.cfg['button']).place(
                 x=(self.cfg['window']['width'] / len(btns)) * i + (self.cfg['window']['width'] / len(btns) * 0.1),
                 y=(self.cfg['window']['height'] - self.cfg['window']['height'] * 0.1),
@@ -86,16 +96,39 @@ class APP(Frame):
             height=25,
             width=(self.cfg['window']['width'] / 2 * 0.8),
         )
+
+        # that's chackbox variables
+        # use them to ckeck if checkbox is active
+        self.checkbox_value = {
+            'vk': IntVar(),
+            'google': IntVar(),
+            'users': IntVar(),
+        }
         chckboxes = [
             {
                 'key': 'vk',
                 'prop': {
-                    'text': 'use VK',
+                    'text': 'Use VK',
+                    'variable': self.checkbox_value['vk'],
+                }
+            },
+            {
+                'key': 'google',
+                'prop': {
+                    'text': 'Google search',
+                    'variable': self.checkbox_value['google'],
+                }
+            },
+            {
+                'key': 'users',
+                'prop': {
+                    'text': 'User input',
+                    'variable': self.checkbox_value['users'],
+                    'command': lambda: print('checkbutton click: '),
                 }
             },
         ]
-        self.checkboxes = {
-            chckboxes[i]['key']:
+        [
             Checkbutton(
                 self,
                 **chckboxes[i]['prop'],
@@ -107,4 +140,6 @@ class APP(Frame):
                 width=(self.cfg['window']['width'] / 2 * 0.8),
             )
             for i in range(len(chckboxes))
-        }
+        ]
+        # FIXME
+        # add textboxes for user's information
