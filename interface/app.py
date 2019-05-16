@@ -6,6 +6,17 @@ from tkinter import (
     Label,
     Checkbutton,
     IntVar,
+    StringVar,
+    Entry,
+)
+from tkinter.filedialog import (
+    askopenfilename,
+    asksaveasfile,
+)
+
+from conf import (
+    get_conf,
+    save_conf,
 )
 
 DEFAULT_BACKGROUND_COLOR = '#DFFFDF'
@@ -53,12 +64,20 @@ class APP(Frame):
         self.P.title(self.cfg['window']['title'])
         self.P.geometry('{width}x{height}+{offset_x}+{offset_y}'.format(**self.cfg['window']))
         self.pack(fill=BOTH, expand=1)
+
+        # that's chackbox variables
+        # use them to ckeck if checkbox is active
+        self.input_variables = {
+            'vk': IntVar(),
+            'google': IntVar(),
+            'users': IntVar(),
+            'nick': StringVar()
+        }
+
         btns = [
             {
                 'text': 'Import',
-                # FIXME
-                # add button handler
-                # 'command': lambda *a, **b: True,
+                'command': lambda *a, **b: get_conf(askopenfilename())
             },
             {
                 'text': 'Start',
@@ -68,9 +87,7 @@ class APP(Frame):
             },
             {
                 'text': 'Export',
-                # FIXME
-                # add button handler
-                # 'command': lambda *a, **b: True,
+                'command': lambda *a, **b: save_conf(asksaveasfile())
             },
             {
                 'text': 'Quit',
@@ -97,33 +114,26 @@ class APP(Frame):
             width=(self.cfg['window']['width'] / 2 * 0.8),
         )
 
-        # that's chackbox variables
-        # use them to ckeck if checkbox is active
-        self.checkbox_value = {
-            'vk': IntVar(),
-            'google': IntVar(),
-            'users': IntVar(),
-        }
         chckboxes = [
             {
                 'key': 'vk',
                 'prop': {
                     'text': 'Use VK',
-                    'variable': self.checkbox_value['vk'],
+                    'variable': self.input_variables['vk'],
                 }
             },
             {
                 'key': 'google',
                 'prop': {
                     'text': 'Google search',
-                    'variable': self.checkbox_value['google'],
+                    'variable': self.input_variables['google'],
                 }
             },
             {
                 'key': 'users',
                 'prop': {
                     'text': 'User input',
-                    'variable': self.checkbox_value['users'],
+                    'variable': self.input_variables['users'],
                     'command': lambda: print('checkbutton click: '),
                 }
             },
@@ -141,5 +151,12 @@ class APP(Frame):
             )
             for i in range(len(chckboxes))
         ]
-        # FIXME
-        # add textboxes for user's information
+        Entry(
+            self,
+            textvariable=self.input_variables['nick'],
+        ).place(
+            x=(self.cfg['window']['width'] * 0.1),
+            y=(self.cfg['window']['height'] * (0.45 + 0.1 * 0)),
+            height=25,
+            width=(self.cfg['window']['width'] / 2 * 0.8)
+        )
