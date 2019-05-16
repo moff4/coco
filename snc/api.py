@@ -29,7 +29,7 @@ class AbstractApi:
         if http_method == 'GET':
             request = requests.get
         elif http_method == 'POST':
-            request = request.post
+            request = requests.post
         else:
             raise ValueError('Unallowed HTTP method "{}"'.format(http_method))
         res = request(url, params=params)
