@@ -21,6 +21,13 @@ from conf import (
 
 DEFAULT_BACKGROUND_COLOR = '#DFFFDF'
 
+TypeMap = {
+    'label': Label,
+    'entry': Entry,
+    'checkbutton': Checkbutton,
+    'button': Button,
+}
+
 
 def merge(d1, d2):
     for i in d2:
@@ -51,7 +58,9 @@ class APP(Frame):
         'checkbutton': {
             'foreground': 'black',
             'background': DEFAULT_BACKGROUND_COLOR,
-        }
+        },
+        'entry': {
+        },
     }
 
     def __init__(self, P, **kwargs):
@@ -69,94 +78,173 @@ class APP(Frame):
         # use them to ckeck if checkbox is active
         self.input_variables = {
             'vk': IntVar(),
+            'vk_id': StringVar(),
+            'vk_token': StringVar(),
             'google': IntVar(),
             'users': IntVar(),
-            'nick': StringVar()
+            'first_name': StringVar(),
+            'family_name': StringVar(),
+            'age': StringVar(),
         }
 
-        btns = [
-            {
-                'text': 'Import',
-                'command': lambda *a, **b: get_conf(askopenfilename())
-            },
-            {
-                'text': 'Start',
-                # FIXME
-                # add button handler
-                # 'command': lambda *a, **b: True,
-            },
-            {
-                'text': 'Export',
-                'command': lambda *a, **b: save_conf(asksaveasfile())
-            },
-            {
-                'text': 'Quit',
-                'command': self.quit,
-            },
+        objs = [
+            [
+                TypeMap[obj['type']](
+                    self,
+                    **obj['prop'],
+                    **self.cfg[obj['type']],
+                )
+            ]
+            if isinstance(obj, dict) else [
+                TypeMap[_obj['type']](
+                    self,
+                    **_obj['prop'],
+                    **self.cfg[_obj['type']],
+                )
+                for _obj in obj
+            ]
+            for obj in [
+                {
+                    'type': 'label',
+                    'prop': {
+                        'text': 'Engines',
+                    }
+                },
+                {
+                    'type': 'checkbutton',
+                    'prop': {
+                        'text': 'Use VK',
+                        'variable': self.input_variables['vk'],
+                    }
+                },
+                [
+                    {
+                        'type': 'label',
+                        'prop': {
+                            'text': 'Vk user id: ',
+                        }
+                    },
+                    {
+                        'type': 'entry',
+                        'prop': {
+                            'textvariable': self.input_variables['vk_id']
+                        }
+                    },
+                ],
+                [
+                    {
+                        'type': 'label',
+                        'prop': {
+                            'text': 'Vk token: ',
+                        }
+                    },
+                    {
+                        'type': 'entry',
+                        'prop': {
+                            'textvariable': self.input_variables['vk_token']
+                        }
+                    },
+                ],
+                {
+                    'type': 'checkbutton',
+                    'prop': {
+                        'text': 'Google search',
+                        'variable': self.input_variables['google'],
+                    }
+                },
+                {
+                    'type': 'checkbutton',
+                    'prop': {
+                        'text': 'User input',
+                        'variable': self.input_variables['users'],
+                    }
+                },
+                [
+                    {
+                        'type': 'label',
+                        'prop': {
+                            'text': 'First name: ',
+                        }
+                    },
+                    {
+                        'type': 'entry',
+                        'prop': {
+                            'textvariable': self.input_variables['first_name']
+                        }
+                    },
+                ],
+                [
+                    {
+                        'type': 'label',
+                        'prop': {
+                            'text': 'Family name: ',
+                        }
+                    },
+                    {
+                        'type': 'entry',
+                        'prop': {
+                            'textvariable': self.input_variables['family_name']
+                        }
+                    },
+                ],
+                [
+                    {
+                        'type': 'label',
+                        'prop': {
+                            'text': 'Age: ',
+                        }
+                    },
+                    {
+                        'type': 'entry',
+                        'prop': {
+                            'textvariable': self.input_variables['age']
+                        }
+                    },
+                ],
+                [
+                    {
+                        'type': 'button',
+                        'prop': {
+                            'text': 'Import',
+                            'command': lambda *a, **b: get_conf(askopenfilename())
+                        },
+                    },
+                    {
+                        'type': 'button',
+                        'prop': {
+                            'text': 'Start',
+                            # FIXME
+                            # add button handler
+                            # 'command': lambda *a, **b: True,
+                        },
+                    },
+                    {
+                        'type': 'button',
+                        'prop': {
+                            'text': 'Export',
+                            'command': lambda *a, **b: save_conf(asksaveasfile())
+                        },
+                    },
+                    {
+                        'type': 'button',
+                        'prop': {
+                            'text': 'Quit',
+                            'command': self.quit,
+                        },
+                    },
+                ],
+            ]
         ]
-        [
-            Button(self, **btns[i], **self.cfg['button']).place(
-                x=(self.cfg['window']['width'] / len(btns)) * i + (self.cfg['window']['width'] / len(btns) * 0.1),
-                y=(self.cfg['window']['height'] - self.cfg['window']['height'] * 0.1),
-                height=25,
-                width=(self.cfg['window']['width'] / len(btns) * 0.8),
-            )
-            for i in range(len(btns))
-        ]
-        Label(
-            self,
-            text='Engines',
-            **self.cfg['label']
-        ).place(
-            x=(self.cfg['window']['width'] * 0.1),
-            y=(self.cfg['window']['height'] * 0.05),
-            height=25,
-            width=(self.cfg['window']['width'] / 2 * 0.8),
-        )
-
-        chckboxes = [
-            {
-                'key': 'vk',
-                'prop': {
-                    'text': 'Use VK',
-                    'variable': self.input_variables['vk'],
-                }
-            },
-            {
-                'key': 'google',
-                'prop': {
-                    'text': 'Google search',
-                    'variable': self.input_variables['google'],
-                }
-            },
-            {
-                'key': 'users',
-                'prop': {
-                    'text': 'User input',
-                    'variable': self.input_variables['users'],
-                    'command': lambda: print('checkbutton click: '),
-                }
-            },
-        ]
-        [
-            Checkbutton(
-                self,
-                **chckboxes[i]['prop'],
-                **self.cfg['checkbutton'],
-            ).place(
-                x=(self.cfg['window']['width'] * 0.1),
-                y=(self.cfg['window']['height'] * (0.15 + 0.1 * i)),
-                height=25,
-                width=(self.cfg['window']['width'] / 2 * 0.8),
-            )
-            for i in range(len(chckboxes))
-        ]
-        Entry(
-            self,
-            textvariable=self.input_variables['nick'],
-        ).place(
-            x=(self.cfg['window']['width'] * 0.1),
-            y=(self.cfg['window']['height'] * (0.45 + 0.1 * 0)),
-            height=25,
-            width=(self.cfg['window']['width'] / 2 * 0.8)
-        )
+        for i in range(len(objs)):
+            for j in range(len(objs[i])):
+                objs[i][j].place(
+                    # x=(self.cfg['window']['width'] * 0.1),
+                    x=(
+                        (self.cfg['window']['width'] / len(objs[i])) * j
+                    ) + (
+                        self.cfg['window']['width'] / len(objs[i]) * 0.1
+                    ),
+                    y=(self.cfg['window']['height'] * (0.1 * i)),
+                    height=25,
+                    width=(self.cfg['window']['width'] / max(2, len(objs[i])) * 0.8),
+                )
