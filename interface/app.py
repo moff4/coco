@@ -238,13 +238,12 @@ class APP(Frame):
         for i in range(len(objs)):
             for j in range(len(objs[i])):
                 objs[i][j].place(
-                    # x=(self.cfg['window']['width'] * 0.1),
                     x=(
                         (self.cfg['window']['width'] / len(objs[i])) * j
                     ) + (
                         self.cfg['window']['width'] / len(objs[i]) * 0.1
                     ),
-                    y=(self.cfg['window']['height'] * (0.1 * i)),
+                    y=(self.cfg['window']['height'] * i / len(objs)),
                     height=25,
                     width=(self.cfg['window']['width'] / max(2, len(objs[i])) * 0.8),
                 )
