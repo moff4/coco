@@ -1,4 +1,5 @@
-from abc import ABCMeta, abstractmethod
+import abc
+from abc import abstractmethod
 from functools import reduce
 
 
@@ -11,32 +12,49 @@ class MutationType:
         pass
 
 
-class Mutation(ABCMeta):
-    type = None
-
-    def __init__(self, type):
-        self.type = type
-
+class Mutation(abc.ABC):
+    @staticmethod
     @abstractmethod
-    def mutate(self, string):
+    def mutate(string):
         pass
 
 
 class Upper(Mutation):
+    type = MutationType.Full
 
-    def __init__(self):
-        super(Mutation, self).__init__(MutationType.Full)
+    @staticmethod
+    def mutate(string):
+        def __magic__bool__(obj):
+            obj.value = not obj.value
+            return obj.value
 
-    def mutate(self, string):
-        return string.upper()
+        flag = type(
+            'MaGiC',
+            (),
+            {
+                'value': False,
+                '__bool__': __magic__bool__,
+            }
+        )()
+        return [
+                   string.upper(),
+                   ''.join(string[0].upper() + string[1:])
+               ] + [
+                   ''.join(
+                       [
+                           letter if flag else letter.upper()
+                           for letter in string
+                           if letter.isalpha()
+                       ]
+                   )
+               ]
 
 
 class Letter(Mutation):
+    type = MutationType.Word
 
-    def __init__(self):
-        super(Mutation, self).__init__(MutationType.Word)
-
-    def mutate(self, string):
+    @staticmethod
+    def mutate(string):
         return reduce(
             lambda x, y: x + y,
             (
@@ -56,6 +74,7 @@ class Letter(Mutation):
 
 
 class MonthMutate(Mutation):
+    type = MutationType.Lexical
     mutation_cases = {
         '01': ['Jan', '1'],
         '02': ['Feb', '2'],
@@ -71,11 +90,9 @@ class MonthMutate(Mutation):
         '12': ['Dec', 'December', '12'],
     }
 
-    def __init__(self):
-        super(Mutation, self).__init__(MutationType.Lexical)
-
-    def mutate(self, string):
-        return self.mutation_cases.get(string, [])
+    @staticmethod
+    def mutate(string):
+        return MonthMutate.mutation_cases.get(string, [])
 
 
 all_mutations = [Upper, Letter, MonthMutate]

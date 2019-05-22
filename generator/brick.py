@@ -1,9 +1,10 @@
 import abc
 
+from generator.mutation import all_mutations, MutationType, Letter, MonthMutate
 
-class Brick(abc.ABCMeta):
+
+class Brick(abc.ABC):
     string = ""
-
     @abc.abstractmethod
     def __init__(self, string):
         self.string = string.lower()
@@ -13,8 +14,18 @@ class Brick(abc.ABCMeta):
     def validate(string):
         pass
 
+    def mutate(self):
+        for mutation in all_mutations:
+            if mutation.type == MutationType.Full:
+                yield from mutation.mutate(self.string)
+            else:
+                if mutation in self.mutations:
+                    yield from mutation.mutate(self.string)
+
 
 class Word(Brick):
+    mutations = [Letter]
+
     def __init__(self, string):
         self.validate(string)
         super(Word, self).__init__(string)
@@ -25,6 +36,8 @@ class Word(Brick):
 
 
 class NickName(Brick):
+    mutations = [Letter]
+
     def __init__(self, string):
         self.validate(string)
         super(NickName, self).__init__(string)
@@ -35,6 +48,7 @@ class NickName(Brick):
 
 
 class Day(Brick):
+
     def __init__(self, string):
         self.validate(string)
         super(Day, self).__init__(string)
@@ -46,6 +60,7 @@ class Day(Brick):
 
 
 class Month(Brick):
+    mutations = [MonthMutate]
     def __init__(self, string):
         self.validate(string)
         super(Month, self).__init__(string)
@@ -104,6 +119,12 @@ class Date:
             except AssertionError:
                 pass
 
+    def mutate(self):
+        mutations = []
+        mutations.extend(self.day.mutate())
+        mutations.extend(self.month.mutate())
+        mutations.extend(self.year.mutate())
+        return mutations
 
 class Name:
     name = []
@@ -116,3 +137,10 @@ class Name:
             finally:
                 pass
 
+    def mutate(self):
+        return (
+            i
+            for one_name in self.name
+            if isinstance(one_name, Word)
+            for i in one_name.mutate()
+        )
