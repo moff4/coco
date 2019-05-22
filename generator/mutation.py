@@ -1,6 +1,5 @@
 import abc
 from abc import abstractmethod
-from functools import reduce
 
 
 class MutationType:
@@ -37,17 +36,17 @@ class Upper(Mutation):
             }
         )()
         return [
-                   string.upper(),
-                   ''.join(string[0].upper() + string[1:])
-               ] + [
-                   ''.join(
-                       [
-                           letter if flag else letter.upper()
-                           for letter in string
-                           if letter.isalpha()
-                       ]
-                   )
-               ]
+            string.upper(),
+            ''.join(string[0].upper() + string[1:])
+        ] + [
+            ''.join(
+                [
+                    letter if flag else letter.upper()
+                    for letter in string
+                    if letter.isalpha()
+                ]
+            )
+        ]
 
 
 class Letter(Mutation):
@@ -55,9 +54,9 @@ class Letter(Mutation):
 
     @staticmethod
     def mutate(string):
-        return reduce(
-            lambda x, y: x + y,
-            (
+        return (
+            j
+            for i in (
                 [
                     string.replace('a', '@'),
                     string.replace('A', '@'),
@@ -70,6 +69,7 @@ class Letter(Mutation):
                 for letter in string.lower()
                 if letter in {'a', 's'}
             )
+            for j in i
         )
 
 

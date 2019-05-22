@@ -4,7 +4,9 @@ from generator.mutation import all_mutations, MutationType, Letter, MonthMutate
 
 
 class Brick(abc.ABC):
-    string = ""
+    string = ''
+    mutations = {}
+
     @abc.abstractmethod
     def __init__(self, string):
         self.string = string.lower()
@@ -24,7 +26,7 @@ class Brick(abc.ABC):
 
 
 class Word(Brick):
-    mutations = [Letter]
+    mutations = {Letter}
 
     def __init__(self, string):
         self.validate(string)
@@ -36,7 +38,7 @@ class Word(Brick):
 
 
 class NickName(Brick):
-    mutations = [Letter]
+    mutations = {Letter}
 
     def __init__(self, string):
         self.validate(string)
@@ -55,31 +57,30 @@ class Day(Brick):
 
     @staticmethod
     def validate(string):
-        day = int(string)
-        assert 1 <= day <= 31
+        assert 1 <= int(string) <= 31
 
 
 class Month(Brick):
-    mutations = [MonthMutate]
+    mutations = {MonthMutate}
+
     def __init__(self, string):
         self.validate(string)
         super(Month, self).__init__(string)
 
     @staticmethod
     def validate(string):
-        month = int(string)
-        assert 1 <= month <= 12
+        assert 1 <= int(string) <= 12
 
 
 class Year(Brick):
+
     def __init__(self, string):
         self.validate(string)
         super(Year, self).__init__(string)
 
     @staticmethod
     def validate(string):
-        year = int(string)
-        assert 1000 <= year <= 3000
+        assert 1000 <= int(string) <= 3000
 
 
 class Date:
@@ -87,16 +88,7 @@ class Date:
     month = None
     year = None
 
-    def __init__(self, day=None, month=None, year=None, string=None, delimiter="-"):
-        if day:
-            assert isinstance(day, Day)
-            self.day = day
-        if month:
-            assert isinstance(month, Month)
-            self.month = month
-        if year:
-            assert isinstance(year, Year)
-            self.year = year
+    def __init__(self, string, delimiter='.'):
         if string:
             assert len(delimiter) == 1
             date = string.split(delimiter)
@@ -120,11 +112,12 @@ class Date:
                 pass
 
     def mutate(self):
-        mutations = []
-        mutations.extend(self.day.mutate())
-        mutations.extend(self.month.mutate())
-        mutations.extend(self.year.mutate())
-        return mutations
+        return {
+            j
+            for i in {self.day, self.month, self.year}
+            for j in i.mutate()
+        }
+
 
 class Name:
     name = []
