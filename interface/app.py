@@ -17,7 +17,6 @@ from tkinter.filedialog import (
 
 from conf import (
     get_conf,
-    set_conf,
     save_conf,
 )
 
@@ -85,18 +84,20 @@ class APP(Frame):
             cfg['vk_id'] = int(cfg['vk_id'])
 
         if cfg['users']:
-            if not cfg['first_name']:
+            if not cfg['u_first_name']:
                 return messagebox.showerror('Something missing', 'Please, write users\'s first name')
-            if not cfg['family_name']:
+            if not cfg['u_family_name']:
                 return messagebox.showerror('Something missing', 'Please, write users\'s family name')
-            if not cfg['age']:
+            if not cfg['u_age']:
                 return messagebox.showerror('Something missing', 'Please, write users\'s age')
 
-        print(f'user\'s input: {cfg}')
+        out_stream = asksaveasfile()
+        if out_stream:
+            for i in GeneratePassword(cfg).pswd():
+                if i:
+                    out_stream.write(''.join([i, '\n']))
 
-        generator = GeneratePassword(info=cfg)
-        # FIXME
-        # pass generator to saver
+        messagebox.showinfo('Success!', 'Passwords saved!')
 
     def import_button_click(self):
         cfg = get_conf(askopenfilename())
@@ -125,9 +126,9 @@ class APP(Frame):
             'vk_token': StringVar(),
             'google': IntVar(),
             'users': IntVar(),
-            'first_name': StringVar(),
-            'family_name': StringVar(),
-            'age': StringVar(),
+            'u_first_name': StringVar(),
+            'u_family_name': StringVar(),
+            'u_age': StringVar(),
         }
 
         objs = [
@@ -213,7 +214,7 @@ class APP(Frame):
                     {
                         'type': 'entry',
                         'prop': {
-                            'textvariable': self.input_variables['first_name']
+                            'textvariable': self.input_variables['u_first_name']
                         }
                     },
                 ],
@@ -227,7 +228,7 @@ class APP(Frame):
                     {
                         'type': 'entry',
                         'prop': {
-                            'textvariable': self.input_variables['family_name']
+                            'textvariable': self.input_variables['u_family_name']
                         }
                     },
                 ],
@@ -241,7 +242,7 @@ class APP(Frame):
                     {
                         'type': 'entry',
                         'prop': {
-                            'textvariable': self.input_variables['age']
+                            'textvariable': self.input_variables['u_age']
                         }
                     },
                 ],
