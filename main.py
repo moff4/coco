@@ -19,8 +19,7 @@ def main():
 if __name__ == '__main__':
     main()
     saver = Saver('results.txt')
-    #Todo: put info here. Fill info structure in GeneratePassword. The example is present.
-    info = {}
-    generator = GeneratePassword(info)
-    for pswd in generator.pswd():
+    # Todo: put info here. Fill info structure in GeneratePassword. The example is present.
+    info = {"name":"jdfsjdfJDsad"}
+    for pswd in GeneratePassword(info).pswd():
         saver.output(pswd)

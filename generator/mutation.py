@@ -13,35 +13,48 @@ class MutationType:
 
 
 class Mutation(abc.ABC):
+    @staticmethod
     @abstractmethod
-    def mutate(self, string):
+    def mutate(string):
         pass
 
 
 class Upper(Mutation):
     type = MutationType.Full
 
-    def mutate(self, string):
-        mutations = []
-        mutations.append(string.upper())
-        mutations.append(string[0].upper()+string[1:])
-        result = ""
-        flag = True
-        for letter in string:
-            if letter.isalpha():
-                flag = not flag
-                if flag:
-                    result += letter.upper()
-                else:
-                    result += letter
-        mutations.append(result)
-        return mutations
+    @staticmethod
+    def mutate(string):
+        def __magic__bool__(obj):
+            obj.value = not obj.value
+            return obj.value
+
+        flag = type(
+            'MaGiC',
+            (),
+            {
+                'value': False,
+                '__bool__': __magic__bool__,
+            }
+        )()
+        return [
+                   string.upper(),
+                   ''.join(string[0].upper() + string[1:])
+               ] + [
+                   ''.join(
+                       [
+                           letter if flag else letter.upper()
+                           for letter in string
+                           if letter.isalpha()
+                       ]
+                   )
+               ]
 
 
 class Letter(Mutation):
     type = MutationType.Word
 
-    def mutate(self, string):
+    @staticmethod
+    def mutate(string):
         return reduce(
             lambda x, y: x + y,
             (
@@ -77,8 +90,9 @@ class MonthMutate(Mutation):
         '12': ['Dec', 'December', '12'],
     }
 
-    def mutate(self, string):
-        return self.mutation_cases.get(string, [])
+    @staticmethod
+    def mutate(string):
+        return MonthMutate.mutation_cases.get(string, [])
 
 
 all_mutations = [Upper, Letter, MonthMutate]

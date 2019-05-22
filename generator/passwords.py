@@ -21,9 +21,7 @@ class GeneratePassword():
                     brick = Word(var)
                 for mutation in brick.mutate():
                     yield mutation
-            except AssertionError:
-                pass
-            except AttributeError:
+            except (AssertionError, AttributeError):
                 pass
             except Exception as e:
                 raise e

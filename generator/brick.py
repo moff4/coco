@@ -16,14 +16,11 @@ class Brick(abc.ABC):
 
     def mutate(self):
         for mutation in all_mutations:
-            mutation = mutation
             if mutation.type == MutationType.Full:
-                for res in mutation.mutate(mutation, self.string):
-                    yield res
+                yield from mutation.mutate(self.string)
             else:
                 if mutation in self.mutations:
-                    for res in mutation.mutate(mutation, self.string):
-                        yield res
+                    yield from mutation.mutate(self.string)
 
 
 class Word(Brick):
@@ -124,9 +121,9 @@ class Date:
 
     def mutate(self):
         mutations = []
-        mutations += self.day.mutate()
-        mutations += self.month.mutate()
-        mutations += self.year.mutate()
+        mutations.extend(self.day.mutate())
+        mutations.extend(self.month.mutate())
+        mutations.extend(self.year.mutate())
         return mutations
 
 class Name:
@@ -141,9 +138,9 @@ class Name:
                 pass
 
     def mutate(self):
-        mutations = []
-        for one_name in self.name:
-            if isinstance(one_name, Word):
-                mutations += one_name.mutate()
-        return mutations
-
+        return (
+            i
+            for one_name in self.name
+            if isinstance(one_name, Word)
+            for i in one_name.mutate()
+        )
