@@ -235,7 +235,7 @@ class APP(Frame):
                     {
                         'type': 'label',
                         'prop': {
-                            'text': 'Age: ',
+                            'text': 'Date of birth: ',
                         }
                     },
                     {
