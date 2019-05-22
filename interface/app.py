@@ -16,6 +16,7 @@ from tkinter.filedialog import (
 
 from conf import (
     get_conf,
+    set_conf,
     save_conf,
 )
 
@@ -68,6 +69,26 @@ class APP(Frame):
         Frame.__init__(self, P, background=self.cfg['window']['background'])
         self.P = P
         self.initUI()
+
+    def start_button_click(self):
+        cfg = {k: self.input_variables[k].get() for k in self.input_variables}
+        # FIXME do smth
+        print(cfg)
+
+    def import_button_click(self):
+        cfg = get_conf(askopenfilename())
+        for k in self.input_variables:
+            if k in cfg:
+                self.input_variables[k].set(cfg[k])
+
+    def export_button_click(self):
+        save_conf(
+            asksaveasfile(),
+            {
+                k: self.input_variables[k].get()
+                for k in self.input_variables
+            }
+        )
 
     def initUI(self):
         self.P.title(self.cfg['window']['title'])
@@ -206,23 +227,21 @@ class APP(Frame):
                         'type': 'button',
                         'prop': {
                             'text': 'Import',
-                            'command': lambda *a, **b: get_conf(askopenfilename())
+                            'command': self.import_button_click
                         },
                     },
                     {
                         'type': 'button',
                         'prop': {
                             'text': 'Start',
-                            # FIXME
-                            # add button handler
-                            # 'command': lambda *a, **b: True,
+                            'command': self.start_button_click,
                         },
                     },
                     {
                         'type': 'button',
                         'prop': {
                             'text': 'Export',
-                            'command': lambda *a, **b: save_conf(asksaveasfile())
+                            'command': self.export_button_click
                         },
                     },
                     {

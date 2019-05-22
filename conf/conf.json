@@ -1,6 +1,1 @@
-{
-    "vk": {
-        "access_token": "secret",
-        "user_id": 1
-    }
-}
+{"vk": 1, "vk_id": "asd", "vk_token": "", "google": 0, "users": 0, "first_name": "", "family_name": "", "age": ""}

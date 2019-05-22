@@ -14,5 +14,10 @@ def get_conf(filename=None):
     return conf
 
 
-def save_conf(f):
-    json.dump(get_conf(), f)
+def set_conf(d):
+    global conf
+    conf = d
+
+
+def save_conf(f, d=None):
+    json.dump(d or get_conf(), f)
