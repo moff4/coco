@@ -19,5 +19,6 @@ def set_conf(d):
     conf = d
 
 
-def save_conf(f, d=None):
-    json.dump(d or get_conf(), f)
+def save_conf(f, d):
+    if f is not None:
+        json.dump(d, f)

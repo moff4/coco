@@ -8,6 +8,7 @@ from tkinter import (
     IntVar,
     StringVar,
     Entry,
+    messagebox,
 )
 from tkinter.filedialog import (
     askopenfilename,
@@ -19,6 +20,8 @@ from conf import (
     set_conf,
     save_conf,
 )
+
+from generator.passwords import GeneratePassword
 
 DEFAULT_BACKGROUND_COLOR = '#DFFFDF'
 
@@ -72,8 +75,28 @@ class APP(Frame):
 
     def start_button_click(self):
         cfg = {k: self.input_variables[k].get() for k in self.input_variables}
-        # FIXME do smth
-        print(cfg)
+        if cfg['vk']:
+            if not cfg['vk_token']:
+                return messagebox.showerror('Something missing', 'Please, write VK access_token')
+            if not cfg['vk_id']:
+                return messagebox.showerror('Something missing', 'Please, write VK user_id')
+            if not cfg['vk_id'].isdigit():
+                return messagebox.showerror('Something missing', 'Please, write valid VK user_id (only digits)')
+            cfg['vk_id'] = int(cfg['vk_id'])
+
+        if cfg['users']:
+            if not cfg['first_name']:
+                return messagebox.showerror('Something missing', 'Please, write users\'s first name')
+            if not cfg['family_name']:
+                return messagebox.showerror('Something missing', 'Please, write users\'s family name')
+            if not cfg['age']:
+                return messagebox.showerror('Something missing', 'Please, write users\'s age')
+
+        print(f'user\'s input: {cfg}')
+
+        generator = GeneratePassword(info=cfg)
+        # FIXME
+        # pass generator to saver
 
     def import_button_click(self):
         cfg = get_conf(askopenfilename())
@@ -95,8 +118,7 @@ class APP(Frame):
         self.P.geometry('{width}x{height}+{offset_x}+{offset_y}'.format(**self.cfg['window']))
         self.pack(fill=BOTH, expand=1)
 
-        # that's chackbox variables
-        # use them to ckeck if checkbox is active
+        # all user's input
         self.input_variables = {
             'vk': IntVar(),
             'vk_id': StringVar(),
@@ -166,13 +188,14 @@ class APP(Frame):
                         }
                     },
                 ],
-                {
-                    'type': 'checkbutton',
-                    'prop': {
-                        'text': 'Google search',
-                        'variable': self.input_variables['google'],
-                    }
-                },
+                # Decomment after implementation
+                # {
+                #     'type': 'checkbutton',
+                #     'prop': {
+                #         'text': 'Google search',
+                #         'variable': self.input_variables['google'],
+                #     }
+                # },
                 {
                     'type': 'checkbutton',
                     'prop': {
