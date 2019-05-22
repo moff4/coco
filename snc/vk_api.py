@@ -6,7 +6,7 @@ class VKAPI(AbstractApi):
         Minimal realization of VK API
     """
 
-    __default_kwargs = {
+    default_kwargs = {
         'access_token': None,
         'v': '5.95',
     }
@@ -15,7 +15,7 @@ class VKAPI(AbstractApi):
     request_rate = 0.4
 
     def _request(self, api_method, params=None, http_method='GET'):
-
+        print(api_method, self.cfg)
         if self.cfg['access_token'] is None:
             raise ValueError('access_token is not set')
         if params is None:

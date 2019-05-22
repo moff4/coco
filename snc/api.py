@@ -6,12 +6,12 @@ class AbstractApi:
     """
         Abstract Api class
     """
-    __default_kwargs = {}
+    default_kwargs = {}
     last_request = 0
     request_rate = 1
 
     def __init__(self, **kwargs):
-        self.cfg = {k: kwargs.get(k, self.__default_kwargs[k]) for k in self.__default_kwargs}
+        self.cfg = {k: kwargs.get(k, self.default_kwargs[k]) for k in self.default_kwargs}
 
     def _request(self, url, params=None, http_method='GET'):
         """
