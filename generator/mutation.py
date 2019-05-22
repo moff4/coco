@@ -1,4 +1,5 @@
-from abc import ABCMeta, abstractmethod
+import abc
+from abc import abstractmethod
 from functools import reduce
 
 
@@ -11,30 +12,34 @@ class MutationType:
         pass
 
 
-class Mutation(ABCMeta):
-    type = None
-
-    def __init__(self, type):
-        self.type = type
-
+class Mutation(abc.ABC):
     @abstractmethod
     def mutate(self, string):
         pass
 
 
 class Upper(Mutation):
-
-    def __init__(self):
-        super(Mutation, self).__init__(MutationType.Full)
+    type = MutationType.Full
 
     def mutate(self, string):
-        return string.upper()
+        mutations = []
+        mutations.append(string.upper())
+        mutations.append(string[0].upper()+string[1:])
+        result = ""
+        flag = True
+        for letter in string:
+            if letter.isalpha():
+                flag = not flag
+                if flag:
+                    result += letter.upper()
+                else:
+                    result += letter
+        mutations.append(result)
+        return mutations
 
 
 class Letter(Mutation):
-
-    def __init__(self):
-        super(Mutation, self).__init__(MutationType.Word)
+    type = MutationType.Word
 
     def mutate(self, string):
         return reduce(
@@ -56,6 +61,7 @@ class Letter(Mutation):
 
 
 class MonthMutate(Mutation):
+    type = MutationType.Lexical
     mutation_cases = {
         '01': ['Jan', '1'],
         '02': ['Feb', '2'],
@@ -70,9 +76,6 @@ class MonthMutate(Mutation):
         '11': ['Nov', 'November', '11'],
         '12': ['Dec', 'December', '12'],
     }
-
-    def __init__(self):
-        super(Mutation, self).__init__(MutationType.Lexical)
 
     def mutate(self, string):
         return self.mutation_cases.get(string, [])

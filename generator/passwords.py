@@ -1,9 +1,7 @@
-from snc import FacebookAPI, VKAPI
-from brick import Word, Date, NickName, Name
+from generator.brick import Word, Date, NickName, Name
 
 
 class GeneratePassword():
-    saver = open("res","w")
     exclude = ""
     info = {}
 
@@ -11,14 +9,21 @@ class GeneratePassword():
         self.info = info
 
     def pswd(self):
-        for key, var in self.info:
-            self.saver.write(str(var))
-            if key == "date":
-                brick = Date(var)
-            elif key == "nick":
-                brick = NickName(var)
-            elif key == "name":
-                brick = Name(var)
-            else:
-                brick = Word(var)
-            
+        for key, var in self.info.items():
+            try:
+                if key == "date":
+                    brick = Date(var)
+                elif key == "nick":
+                    brick = NickName(var)
+                elif key == "name":
+                    brick = Name(var)
+                else:
+                    brick = Word(var)
+                for mutation in brick.mutate():
+                    yield mutation
+            except AssertionError:
+                pass
+            except AttributeError:
+                pass
+            except Exception as e:
+                raise e
