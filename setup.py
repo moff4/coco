@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='k2',
+    name='coco',
     version='0.9.5',
     author='Komissarov Andrey',
     author_email='Komissar.off.andrey@mail.ru',
