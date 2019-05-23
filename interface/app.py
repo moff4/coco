@@ -25,7 +25,7 @@ from generator.passwords import GeneratePassword
 import gettext
 _ = gettext.gettext
 
-en = gettext.translation('base', localedir=os.path.join('..', 'locales'), languages=['en'])
+en = gettext.translation('base', localedir=os.path.join('locales'), languages=['en'])
 en.install()
 _ = en.gettext  # English
 
