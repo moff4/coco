@@ -68,6 +68,8 @@ Classes
 
 `VKAPI(**kwargs)`
 :   Minimal realization of VK API
+    
+    :param kwargs: default arguments for API
 
     ### Ancestors (in MRO)
 
@@ -87,30 +89,37 @@ Classes
     ### Methods
 
     `account_getProfileInfo(self)`
-    :   return info about current's user's profile
+    :   Return info about current's user's profile
+        :return: dict with user info
 
     `friends_get(self, user_id, count=5000, offset=0, order='name')`
-    :   return info about user's friends
+    :   Return info about user's friends
+        :return: dict with user friends' info
 
     `groups_get(self, user_id, count=1000, offset=0)`
-    :   return info about user's groups
+    :   Return info about user's groups
+        :param user_id:
+        :param count: number of user groups
+        :param offset: group list offset
+        :return: dict with group info
 
     `set_access_token(self, access_token)`
-    :   set new access_token
+    :   Set new access_token
+        :param access_token:
 
     `users_get(self, user_ids, fields=None)`
-    :   return info about user
-        
-        possible fields:
-        photo_id, verified, sex, bdate, city, country, home_town, has_photo, photo_50,
-        photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig,
-        online, domain, has_mobile, contacts, site, education, universities, schools,
-        status, last_seen, followers_count, common_count, occupation, nickname,
-        relatives, relation, personal, connections, exports, activities, interests,
-        music, movies, tv, books, games, about, quotes, can_post, can_see_all_posts,
-        can_see_audio, can_write_private_message, can_send_friend_request, is_favorite,
-        is_hidden_from_feed, timezone, screen_name, maiden_name, crop_photo, is_friend,
-        friend_status, career, military, blacklisted, blacklisted_by_me
+    :   Return info about user
+        :param fields:
+            photo_id, verified, sex, bdate, city, country, home_town, has_photo, photo_50,
+            photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig,
+            online, domain, has_mobile, contacts, site, education, universities, schools,
+            status, last_seen, followers_count, common_count, occupation, nickname,
+            relatives, relation, personal, connections, exports, activities, interests,
+            music, movies, tv, books, games, about, quotes, can_post, can_see_all_posts,
+            can_see_audio, can_write_private_message, can_send_friend_request, is_favorite,
+            is_hidden_from_feed, timezone, screen_name, maiden_name, crop_photo, is_friend,
+            friend_status, career, military, blacklisted, blacklisted_by_me
+        :return: given fields with completed info
 
 
 Module generator
