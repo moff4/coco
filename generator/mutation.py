@@ -53,24 +53,33 @@ class Letter(Mutation):
     type = MutationType.Word
 
     @staticmethod
-    def mutate(string):
-        return (
-            j
-            for i in (
-                [
-                    string.replace('a', '@'),
-                    string.replace('A', '@'),
-                    string.replace('A', '@').replace('a', '@'),
-                ] if letter == 'a' else [
-                    string.replace('s', '$'),
-                    string.replace('S', '$'),
-                    string.replace('s', '$').replace('S', '$'),
-                ]
-                for letter in string.lower()
-                if letter in {'a', 's'}
+    def sub_mutate(results, az, i=0):
+        results.add(''.join(az))
+        if i >= len(az):
+            return results
+        elif az[i].lower() == 's':
+            bz = list(az)
+            bz[i] = '$'
+            return results.union(
+                Letter.sub_mutate(results, bz, i + 1).union(
+                    Letter.sub_mutate(results, az, i + 1)
+                )
             )
-            for j in i
-        )
+        elif az[i].lower() == 'a':
+            bz = list(az)
+            bz[i] = '@'
+            return results.union(
+                Letter.sub_mutate(results, bz, i + 1).union(
+                    Letter.sub_mutate(results, az, i + 1)
+                )
+            )
+        else:
+            return Letter.sub_mutate(results, az, i + 1)
+
+    def mutate(string):
+        p = Letter.sub_mutate(set(), [i for i in string])
+        print(p)
+        return p
 
 
 class MonthMutate(Mutation):
