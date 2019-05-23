@@ -42,8 +42,12 @@ def merge(d1, d2):
 
 
 class APP(Frame):
+    """
+        Class for collecting user's input
+    """
 
-    defaults = {
+    # default interface properties
+    __defaults = {
         'window': {
             'title': 'title',
             'width': 350,
@@ -67,12 +71,15 @@ class APP(Frame):
     }
 
     def __init__(self, P, **kwargs):
-        self.cfg = merge(kwargs, self.defaults)
+        self.cfg = merge(kwargs, self.__defaults)
         Frame.__init__(self, P, background=self.cfg['window']['background'])
         self.P = P
         self.initUI()
 
     def start_button_click(self):
+        """
+            Start button click handler
+        """
         cfg = {k: self.input_variables[k].get() for k in self.input_variables}
         if cfg['vk']:
             if not cfg['vk_token']:
@@ -100,12 +107,18 @@ class APP(Frame):
         messagebox.showinfo('Success!', 'Passwords saved!')
 
     def import_button_click(self):
+        """
+            Import button click handler
+        """
         cfg = get_conf(askopenfilename())
         for k in self.input_variables:
             if k in cfg:
                 self.input_variables[k].set(cfg[k])
 
     def export_button_click(self):
+        """
+            Export button click handler
+        """
         save_conf(
             asksaveasfile(),
             {
@@ -115,6 +128,9 @@ class APP(Frame):
         )
 
     def initUI(self):
+        """
+            Initialize user interface
+        """
         self.P.title(self.cfg['window']['title'])
         self.P.geometry('{width}x{height}+{offset_x}+{offset_y}'.format(**self.cfg['window']))
         self.pack(fill=BOTH, expand=1)

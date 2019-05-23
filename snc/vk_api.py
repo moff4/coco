@@ -42,9 +42,15 @@ class VKAPI(AbstractApi):
         self.cfg['access_token'] = access_token
 
     def account_getProfileInfo(self):
+        """
+            return info about current's user's profile
+        """
         return self._request('account.getProfileInfo')
 
     def friends_get(self, user_id, count=5000, offset=0, order='name'):
+        """
+            return info about user's friends
+        """
         return self._request(
             'friends.get',
             {
@@ -56,6 +62,9 @@ class VKAPI(AbstractApi):
         )
 
     def groups_get(self, user_id, count=1000, offset=0):
+        """
+            return info about user's groups
+        """
         return self._request(
             'groups.get',
             {
@@ -67,6 +76,8 @@ class VKAPI(AbstractApi):
 
     def users_get(self, user_ids, fields=None):
         """
+            return info about user
+
             possible fields:
             photo_id, verified, sex, bdate, city, country, home_town, has_photo, photo_50,
             photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig,
