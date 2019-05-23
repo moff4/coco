@@ -11,14 +11,18 @@ class AbstractApi:
     request_rate = 1
 
     def __init__(self, **kwargs):
+        """
+        :param kwargs: default arguments for API
+        """
         self.cfg = {k: kwargs.get(k, self.default_kwargs[k]) for k in self.default_kwargs}
 
     def _request(self, url, params=None, http_method='GET'):
         """
-            url - requested url
-            params - params for request
-            http_method - HTTP method of request
-            return response as dict (deserialized json)
+        Ordinary request
+        :param url: requested url
+        :param params: params for request
+        :param http_method: HTTP method of request
+        :return: response as dict (deserialized json)
         """
 
         time_diff = time.time() - self.last_request
