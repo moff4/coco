@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2019-05-23 19:41+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=cp1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: interface\app.py:88
+msgid "Please, write VK access_token"
+msgstr ""
+
+#: interface\app.py:88 interface\app.py:90 interface\app.py:92
+#: interface\app.py:97 interface\app.py:99 interface\app.py:101
+msgid "Something missing"
+msgstr ""
+
+#: interface\app.py:90
+msgid "Please, write VK user_id"
+msgstr ""
+
+#: interface\app.py:92
+msgid "Please, write valid VK user_id (only digits)"
+msgstr ""
+
+#: interface\app.py:97
+msgid "Please, write users's first name"
+msgstr ""
+
+#: interface\app.py:99
+msgid "Please, write users's family name"
+msgstr ""
+
+#: interface\app.py:101
+msgid "Please, write users's age"
+msgstr ""
+
+#: interface\app.py:109
+msgid "Passwords saved!"
+msgstr ""
+
+#: interface\app.py:109
+msgid "Success!"
+msgstr ""
+
+#: interface\app.py:172
+msgid "Engines"
+msgstr ""
+
+#: interface\app.py:178
+msgid "Use VK"
+msgstr ""
+
+#: interface\app.py:186
+msgid "Vk user id: "
+msgstr ""
+
+#: interface\app.py:200
+msgid "Vk token: "
+msgstr ""
+
+#: interface\app.py:221
+msgid "User input"
+msgstr ""
+
+#: interface\app.py:229
+msgid "First name: "
+msgstr ""
+
+#: interface\app.py:243
+msgid "Family name: "
+msgstr ""
+
+#: interface\app.py:257
+msgid "Date of birth: "
+msgstr ""
+
+#: interface\app.py:271
+msgid "Import"
+msgstr ""
+
+#: interface\app.py:278
+msgid "Start"
+msgstr ""
+
+#: interface\app.py:285
+msgid "Export"
+msgstr ""
+
+#: interface\app.py:292
+msgid "Quit"
+msgstr ""
+

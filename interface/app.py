@@ -21,6 +21,12 @@ from conf import (
 )
 
 from generator.passwords import GeneratePassword
+import gettext
+_ = gettext.gettext
+
+en = gettext.translation('base', localedir='..\locales', languages=['en'])
+en.install()
+_ = en.gettext  # English
 
 DEFAULT_BACKGROUND_COLOR = '#DFFFDF'
 
@@ -83,20 +89,20 @@ class APP(Frame):
         cfg = {k: self.input_variables[k].get() for k in self.input_variables}
         if cfg['vk']:
             if not cfg['vk_token']:
-                return messagebox.showerror('Something missing', 'Please, write VK access_token')
+                return messagebox.showerror(_('Something missing'), _('Please, write VK access_token'))
             if not cfg['vk_id']:
-                return messagebox.showerror('Something missing', 'Please, write VK user_id')
+                return messagebox.showerror(_('Something missing'), _('Please, write VK user_id'))
             if not cfg['vk_id'].isdigit():
-                return messagebox.showerror('Something missing', 'Please, write valid VK user_id (only digits)')
+                return messagebox.showerror(_('Something missing'), _('Please, write valid VK user_id (only digits)'))
             cfg['vk_id'] = int(cfg['vk_id'])
 
         if cfg['users']:
             if not cfg['u_first_name']:
-                return messagebox.showerror('Something missing', 'Please, write users\'s first name')
+                return messagebox.showerror(_('Something missing'), _('Please, write users\'s first name'))
             if not cfg['u_family_name']:
-                return messagebox.showerror('Something missing', 'Please, write users\'s family name')
+                return messagebox.showerror(_('Something missing'), _('Please, write users\'s family name'))
             if not cfg['u_age']:
-                return messagebox.showerror('Something missing', 'Please, write users\'s age')
+                return messagebox.showerror(_('Something missing'), _('Please, write users\'s age'))
 
         out_stream = asksaveasfile()
         if out_stream:
@@ -104,7 +110,7 @@ class APP(Frame):
                 if i:
                     out_stream.write(''.join([i, '\n']))
 
-        messagebox.showinfo('Success!', 'Passwords saved!')
+        messagebox.showinfo(_('Success!'), _('Passwords saved!'))
 
     def import_button_click(self):
         """
@@ -167,13 +173,13 @@ class APP(Frame):
                 {
                     'type': 'label',
                     'prop': {
-                        'text': 'Engines',
+                        'text': _('Engines'),
                     }
                 },
                 {
                     'type': 'checkbutton',
                     'prop': {
-                        'text': 'Use VK',
+                        'text': _('Use VK'),
                         'variable': self.input_variables['vk'],
                     }
                 },
@@ -181,7 +187,7 @@ class APP(Frame):
                     {
                         'type': 'label',
                         'prop': {
-                            'text': 'Vk user id: ',
+                            'text': _('Vk user id: '),
                         }
                     },
                     {
@@ -195,7 +201,7 @@ class APP(Frame):
                     {
                         'type': 'label',
                         'prop': {
-                            'text': 'Vk token: ',
+                            'text': _('Vk token: '),
                         }
                     },
                     {
@@ -216,7 +222,7 @@ class APP(Frame):
                 {
                     'type': 'checkbutton',
                     'prop': {
-                        'text': 'User input',
+                        'text': _('User input'),
                         'variable': self.input_variables['users'],
                     }
                 },
@@ -224,7 +230,7 @@ class APP(Frame):
                     {
                         'type': 'label',
                         'prop': {
-                            'text': 'First name: ',
+                            'text': _('First name: '),
                         }
                     },
                     {
@@ -238,7 +244,7 @@ class APP(Frame):
                     {
                         'type': 'label',
                         'prop': {
-                            'text': 'Family name: ',
+                            'text': _('Family name: '),
                         }
                     },
                     {
@@ -252,7 +258,7 @@ class APP(Frame):
                     {
                         'type': 'label',
                         'prop': {
-                            'text': 'Date of birth: ',
+                            'text': _('Date of birth: '),
                         }
                     },
                     {
@@ -266,28 +272,28 @@ class APP(Frame):
                     {
                         'type': 'button',
                         'prop': {
-                            'text': 'Import',
+                            'text': _('Import'),
                             'command': self.import_button_click
                         },
                     },
                     {
                         'type': 'button',
                         'prop': {
-                            'text': 'Start',
+                            'text': _('Start'),
                             'command': self.start_button_click,
                         },
                     },
                     {
                         'type': 'button',
                         'prop': {
-                            'text': 'Export',
+                            'text': _('Export'),
                             'command': self.export_button_click
                         },
                     },
                     {
                         'type': 'button',
                         'prop': {
-                            'text': 'Quit',
+                            'text': _('Quit'),
                             'command': self.quit,
                         },
                     },
